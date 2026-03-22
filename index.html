@@ -1186,8 +1186,11 @@
       const user = auth.currentUser;
       if (!user) return;
 
+      const userSnapshot = await get(ref(db, `users/${user.uid}/profile`));
+      const existingProfile = userSnapshot.exists() ? userSnapshot.val() : {};
+
       const profile = {
-        username: $("username").value.trim() || user.email?.split("@")[0] || "Student",
+        username: existingProfile.username || $("username").value.trim() || user.email?.split("@")[0] || "Student",
         email: user.email || "",
         monthlyIncome: Number($("monthlyIncome").value) || 0,
         monthlyRent: Number($("monthlyRent").value) || 0,
@@ -1236,15 +1239,16 @@
       const user = auth.currentUser;
       if (!user) return;
       await remove(ref(db, `users/${user.uid}`));
-      await saveProfile(user.uid, emptyProfile(user.email || "", user.email?.split("@")[0] || "Student"));
+      await saveProfile(user.uid, emptyProfile(user.email || "", ""));
       await loadUser(user.uid);
     });
 
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        $("username").value = user.email?.split("@")[0] || "";
         await loadUser(user.uid);
       } else {
+        $("loginForm").reset();
+        $("authMessage").textContent = "";
         showScreen("login");
       }
     });

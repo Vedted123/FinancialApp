@@ -505,18 +505,13 @@
         <div class="auth-card glass">
           <div class="auth-top">
             <h2>Sign in</h2>
-            <p>Create an account with email/password. Your username is stored in the app profile.</p>
+            <p>Create an account with username/password. Your username is stored in the app profile.</p>
           </div>
 
           <form id="loginForm">
             <label>
               <span>Username</span>
-              <input id="username" type="text" placeholder="Enter a username for signup">
-            </label>
-
-            <label>
-              <span>Email</span>
-              <input id="email" type="email" placeholder="Enter your email" required>
+              <input id="username" type="text" placeholder="Enter your username" required>
             </label>
 
             <label>
@@ -867,7 +862,13 @@
       "July","August","September","October","November","December"
     ];
 
+    let currentUsername = null;
+
     const $ = (id) => document.getElementById(id);
+
+    function usernameToEmail(username) {
+      return `${username}@app.local`;
+    }
 
     function populateMonthSelect() {
       $("entryMonth").innerHTML = MONTHS.map(m => `<option value="${m}">${m}</option>`).join("");
@@ -891,10 +892,9 @@
       }).format(Number(n) || 0);
     }
 
-    function emptyProfile(email = "", username = "") {
+    function emptyProfile(username = "") {
       return {
         username,
-        email,
         monthlyIncome: 0,
         monthlyRent: 0,
         foodBudget: 0,
@@ -1082,7 +1082,7 @@
     function renderDashboard(profile, entries) {
       const totals = getTotals(profile, entries);
 
-      $("displayUser").textContent = profile.username || profile.email || "Student";
+      $("displayUser").textContent = profile.username || "Student";
       $("incomeCard").textContent = money(totals.totalIncome);
       $("expenseCard").textContent = money(totals.totalExpenses);
       $("remainingCard").textContent = money(totals.remaining);
@@ -1132,10 +1132,10 @@
     async function loadUser(uid) {
       const snapshot = await get(ref(db, `users/${uid}`));
       const data = snapshot.exists() ? snapshot.val() : null;
-      const profile = data?.profile || emptyProfile(auth.currentUser?.email || "", "");
+      const profile = data?.profile || emptyProfile(currentUsername || "");
       const entries = mapEntries(data?.entries);
 
-      $("displayUser").textContent = profile.username || profile.email || "Student";
+      $("displayUser").textContent = profile.username || "Student";
 
       if (!profile.setupComplete) {
         [
@@ -1154,18 +1154,18 @@
 
     $("signupBtn").addEventListener("click", async () => {
       const username = $("username").value.trim();
-      const email = $("email").value.trim();
       const password = $("password").value.trim();
 
-      if (!username || !email || !password) {
-        $("authMessage").textContent = "Enter username, email, and password to create an account.";
+      if (!username || !password) {
+        $("authMessage").textContent = "Enter username and password to create an account.";
         return;
       }
 
       try {
         $("authMessage").textContent = "";
-        const cred = await createUserWithEmailAndPassword(auth, email, password);
-        await saveProfile(cred.user.uid, emptyProfile(email, username));
+        const cred = await createUserWithEmailAndPassword(auth, usernameToEmail(username), password);
+        currentUsername = username;
+        await saveProfile(cred.user.uid, emptyProfile(username));
       } catch (err) {
         $("authMessage").textContent = err.message;
       }
@@ -1173,9 +1173,17 @@
 
     $("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+      const username = $("username").value.trim();
+      const password = $("password").value.trim();
+
+      if (!username || !password) {
+        $("authMessage").textContent = "Enter username and password to login.";
+        return;
+      }
+
       try {
         $("authMessage").textContent = "";
-        await signInWithEmailAndPassword(auth, $("email").value.trim(), $("password").value.trim());
+        await signInWithEmailAndPassword(auth, usernameToEmail(username), password);
       } catch (err) {
         $("authMessage").textContent = err.message;
       }
@@ -1190,8 +1198,7 @@
       const existingProfile = userSnapshot.exists() ? userSnapshot.val() : {};
 
       const profile = {
-        username: existingProfile.username || $("username").value.trim() || user.email?.split("@")[0] || "Student",
-        email: user.email || "",
+        username: existingProfile.username || currentUsername || "Student",
         monthlyIncome: Number($("monthlyIncome").value) || 0,
         monthlyRent: Number($("monthlyRent").value) || 0,
         foodBudget: Number($("foodBudget").value) || 0,
@@ -1239,14 +1246,16 @@
       const user = auth.currentUser;
       if (!user) return;
       await remove(ref(db, `users/${user.uid}`));
-      await saveProfile(user.uid, emptyProfile(user.email || "", ""));
+      await saveProfile(user.uid, emptyProfile(currentUsername || "Student"));
       await loadUser(user.uid);
     });
 
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        currentUsername = user.email ? user.email.split("@")[0] : currentUsername;
         await loadUser(user.uid);
       } else {
+        currentUsername = null;
         $("loginForm").reset();
         $("authMessage").textContent = "";
         showScreen("login");

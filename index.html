@@ -561,57 +561,57 @@
         <form id="setupForm" class="panel glass">
           <div class="grid-2">
             <label>
-              <span>Monthly income ($)</span>
+              <span>Monthly income ($)*</span>
               <input id="monthlyIncome" type="number" min="0" placeholder="e.g. 1200" required>
             </label>
 
             <label>
-              <span>Monthly rent / housing ($)</span>
+              <span>Monthly rent / housing*</span>
               <input id="monthlyRent" type="number" min="0" placeholder="e.g. 650" required>
             </label>
 
             <label>
-              <span>Monthly food budget ($)</span>
+              <span>Monthly food budget*</span>
               <input id="foodBudget" type="number" min="0" placeholder="e.g. 250" required>
             </label>
 
             <label>
-              <span>Monthly transportation budget ($)</span>
+              <span>Monthly transportation budget</span>
               <input id="transportBudget" type="number" min="0" placeholder="e.g. 90" required>
             </label>
 
             <label>
-              <span>Monthly recurring bills ($)</span>
+              <span>Monthly recurring bills*</span>
               <input id="billBudget" type="number" min="0" placeholder="e.g. 60" required>
             </label>
 
             <label>
-              <span>Monthly tuition / books ($)</span>
+              <span>Monthly tuition / books</span>
               <input id="tuitionBudget" type="number" min="0" placeholder="e.g. 150" required>
             </label>
 
             <label>
-              <span>Monthly debt payment ($)</span>
+              <span>Monthly debt payment</span>
               <input id="debtPayment" type="number" min="0" placeholder="e.g. 50" required>
             </label>
 
             <label>
-              <span>Monthly savings goal ($)</span>
+              <span>Monthly savings goal*</span>
               <input id="savingsGoal" type="number" min="0" placeholder="e.g. 200" required>
             </label>
 
             <label>
-              <span>Current emergency fund ($)</span>
+              <span>Current emergency fund</span>
               <input id="emergencyFund" type="number" min="0" placeholder="e.g. 300">
             </label>
 
             <label>
-              <span>Current debt total ($)</span>
+              <span>Current debt total</span>
               <input id="currentDebt" type="number" min="0" placeholder="e.g. 1000">
             </label>
 
             <label>
-              <span>Main monthly goal</span>
+              <span>Main monthly goal*</span>
               <select id="goalType" required>
                 <option value="">Choose one</option>
                 <option>Stay under budget</option>
@@ -623,14 +623,7 @@
               </select>
             </label>
 
-            <label>
-              <span>Needs spending alerts?</span>
-              <select id="alerts" required>
-                <option value="">Choose one</option>
-                <option>Yes</option>
-                <option>No</option>
-              </select>
-            </label>
+            
           </div>
 
           <label>
@@ -905,7 +898,7 @@
         emergencyFund: 0,
         currentDebt: 0,
         goalType: "",
-        alerts: "No",
+        
         overspendArea: "",
         monthlyNotes: "",
         setupComplete: false
@@ -1026,12 +1019,7 @@
         });
       }
 
-      if (profile.alerts === "Yes") {
-        plan.push({
-          title: "Step 4: Use monthly checkpoints",
-          text: "Check your spending at least once each week so you notice problems before the month gets away from you."
-        });
-      }
+     
 
       return plan;
     }
@@ -1199,7 +1187,7 @@
         emergencyFund: Number($("emergencyFund").value) || 0,
         currentDebt: Number($("currentDebt").value) || 0,
         goalType: $("goalType").value,
-        alerts: $("alerts").value,
+        
         overspendArea: $("overspendArea").value,
         monthlyNotes: $("monthlyNotes").value.trim(),
         setupComplete: true

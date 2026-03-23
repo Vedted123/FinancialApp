@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>App name goes here v. 9.6</title>
+  <title>App name goes here v. 9.8</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -862,7 +862,7 @@
         <div class="section-card glass">
           <div class="section-head">
             <div>
-              <p class="eyebrow">Smart summary</p>
+              
               <h3>Insights</h3>
             </div>
           </div>
@@ -872,8 +872,8 @@
         <div class="section-card glass wide">
           <div class="section-head">
             <div>
-              <p class="eyebrow">Generated monthly plan</p>
-              <h3>Your action plan</h3>
+              
+              <h3>Budget Plan</h3>
             </div>
             <span class="month-chip" id="planMonthChip">Current month</span>
           </div>
@@ -1180,7 +1180,7 @@
         return {
           color: "red",
           label: "RED",
-          text: "Your status: Red — spending is ahead of your income right now."
+          text: "Your status: Red: Budget is unhealthy"
         };
       }
 
@@ -1188,14 +1188,14 @@
         return {
           color: "green",
           label: "GREEN",
-          text: "Your status: Green — your budget is in a healthy range."
+          text: "Your status: Green: Budget is healthy"
         };
       }
 
       return {
         color: "yellow",
         label: "YELLOW",
-        text: "Your status: Yellow — you are okay, but getting a little tight."
+        text: "Your status: Yellow: Budget is okay"
       };
     }
 

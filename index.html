@@ -60,10 +60,16 @@
     .screen.active { display: block; }
 
     .glass {
-      background: var(--card);
-      border: 1px solid var(--line);
-      backdrop-filter: blur(14px);
-      box-shadow: var(--shadow);
+        border-radius: 30px;
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px) saturate(200%) contrast(1.3);
+        box-shadow: inset 2px 2px 0px -2px rgba(255, 255, 255, 0.7), inset 0 0 3px 1px rgba(255, 255, 255, 0.7);
+        align-items: center;
+        animation: wetEffect 3s ease-in-out infinite alternate;
+        background: var(--card);
+        border: 1px solid var(--line);
+        backdrop-filter: blur(14px);
+        box-shadow: var(--shadow);
     }
 
     .brand-badge, .eyebrow {

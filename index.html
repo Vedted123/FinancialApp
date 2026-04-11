@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MONEY TALKS v. 10.4</title>
+  <title>MONEY TALKS v. 11.2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -686,12 +686,12 @@
         <div class="panel glass info-panel">
           <h3>What this setup covers</h3>
           <ul>
-            <li>Monthly income from jobs, allowance, or support</li>
-            <li>Monthly rent, food, transportation, and bills</li>
-            <li>Monthly tuition/books and debt payments</li>
-            <li>Monthly savings target and emergency cushion</li>
-            <li>Your biggest financial goal this month</li>
-            <li>A custom monthly action plan</li>
+            <li>Monthly income from jobs or allowances</li>
+            <li>Monthly rent, food, and transportation bills</li>
+            <li>Monthly tuition and debt payments</li>
+            <li>Monthly savings goal</li>
+            <li>-------------------------</li>
+            <li>A custom monthly budget plan</li>
           </ul>
         </div>
 
@@ -777,7 +777,7 @@
 
           <label>
             <span class="label-row">Optional notes about your monthly situation</span>
-            <textarea id="monthlyNotes" placeholder="Example: I get paid biweekly, have one large rent payment, and spend too much on snacks between classes."></textarea>
+            <textarea id="monthlyNotes" placeholder="Example: I get paid biweekly, have one rent payment, and spend too much on fast food like Taco Bell."></textarea>
           </label>
 
           <button class="btn btn-primary" type="submit">Save Monthly Setup</button>
@@ -899,7 +899,7 @@
           <form id="entryForm">
             <div class="grid-3">
               <label>
-                <span class="label-row">Type<span class="info-tip" tabindex="0" data-tip="Choose whether the entry is money coming in or money going out.">i</span></span>
+                <span class="label-row">Type</span>
                 <select id="entryType" required>
                   <option value="">Choose one</option>
                   <option value="income">Income</option>
@@ -908,17 +908,17 @@
               </label>
 
               <label>
-                <span class="label-row">Amount ($)<span class="info-tip" tabindex="0" data-tip="Enter the dollar value of this income or expense entry.">i</span></span>
+                <span class="label-row"></span>
                 <input id="entryAmount" type="number" min="0" step="0.01" placeholder="e.g. 35" required>
               </label>
 
               <label>
-                <span class="label-row">Month<span class="info-tip" tabindex="0" data-tip="Select the month this entry should count toward in your budget.">i</span></span>
+                <span class="label-row">Month</span>
                 <select id="entryMonth" required></select>
               </label>
 
               <label>
-                <span class="label-row">Category<span class="info-tip" tabindex="0" data-tip="Pick the type of income or expense so the app can group it correctly.">i</span></span>
+                <span class="label-row">Category</span>
                 <select id="entryCategory" required>
                   <option value="">Choose one</option>
                   <option>Rent</option>
@@ -937,12 +937,12 @@
               </label>
 
               <label>
-                <span class="label-row">Description<span class="info-tip" tabindex="0" data-tip="Write a short note describing what this entry was for.">i</span></span>
+                <span class="label-row">Description</span>
                 <input id="entryDescription" type="text" placeholder="Example: Grocery run, paycheck, bus pass" required>
               </label>
 
               <label>
-                <span class="label-row">Date<span class="info-tip" tabindex="0" data-tip="The calendar date when this income or expense happened.">i</span></span>
+                <span class="label-row">Date</span>
                 <input id="entryDate" type="date" required>
               </label>
             </div>
@@ -1089,25 +1089,25 @@
       const out = [];
 
       if (totals.remaining < 0) {
-        out.push("Your monthly plan is currently over budget. Please cut budget for non-essentials.");
+        out.push("Your monthly plan is currently over budget. Please don't spend as much on non-essentials non-essentials.");
       } else {
-        out.push(`You currently have ${money(totals.remaining)} left after planned monthly spending.`);
+        out.push(`You currently have ${money(totals.remaining)} left after monthly spending.`);
       }
 
       if (profile.monthlyIncome > 0 && profile.monthlyRent > profile.monthlyIncome * 0.4) {
-        out.push("Monthly rent is over 40% of your monthly income, which is making the rest of the plan tighter.");
+        out.push("Rent is over 40% of your monthly income, which is making the rest of the plan harder to work with.");
       }
 
       if (profile.monthlyIncome > 0 && profile.foodBudget > profile.monthlyIncome * 0.2) {
-        out.push("Your monthly food budget is high compared to income. Meal prep could free up extra savings.");
+        out.push("Your monthly food budget is high compared to salary cut down on the food budget.");
       }
 
       if ((profile.currentDebt || 0) > 0 && (profile.debtPayment || 0) < (profile.currentDebt || 0) * 0.03) {
-        out.push("Your monthly debt payment looks small relative to total debt. Increasing it slightly may help long term.");
+        out.push("Your monthly debt payment is small compared to total debt. Increasing it slightly may help.");
       }
 
       if (profile.overspendArea && profile.overspendArea !== "I usually do okay") {
-        out.push(`Your main overspending risk is ${profile.overspendArea.toLowerCase()}. Build a cap for that area this month.`);
+        out.push(`Your main overspending risk is ${profile.overspendArea.toLowerCase()}.This month don't spend as much on ${profile.overspendArea.toLowerCase()}`);
       }
 
       const currentMonth = MONTHS[new Date().getMonth()];
@@ -1117,7 +1117,7 @@
       }
 
       if ((profile.emergencyFund || 0) < getBaseExpenses(profile) * 0.5) {
-        out.push("Your emergency fund is still thin compared to monthly expenses. Even small monthly saving helps.");
+        out.push("Your emergency fund is still tiny compared to monthly expenses. Even small monthly saving helps.");
       }
 
       return out.slice(0, 5);

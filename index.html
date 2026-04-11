@@ -1130,40 +1130,40 @@
 
       plan.push({
         title: "Step 1: Protect essentials",
-        text: `Reserve ${money(essential)} for monthly essentials first: rent, food, transportation, bills, tuition/books, and debt payment.`
+        text: `Reserve ${money(essential)} for monthly essentials like rent, food, transportation, bills, and debt payment.`
       });
 
       if (profile.goalType === "Build savings") {
         plan.push({
           title: "Step 2: Hit your monthly savings goal",
-          text: `Try to move ${money(profile.savingsGoal)} into savings early in the month instead of waiting to see what is left over.`
+          text: `Try to move ${money(profile.savingsGoal)} into savings early in the month instead of waiting.`
         });
       } else if (profile.goalType === "Pay down debt") {
         plan.push({
           title: "Step 2: Pay extra toward debt",
-          text: `After essentials, put any extra toward debt before optional spending. Even an extra ${money(25)} to ${money(50)} monthly helps.`
+          text: `After essentials, put any extra money toward debt payment before unnecesary spending. Even an extra ${money(25)} to ${money(50)} monthly helps.`
         });
       } else if (profile.goalType === "Reduce food spending") {
         plan.push({
           title: "Step 2: Control food spending",
-          text: "Set a weekly food cap from your monthly food budget so takeout does not quietly eat the whole month."
+          text: "Set a weekly food spending limt from your monthly food budget so you don't spend too much."
         });
       } else {
         plan.push({
           title: "Step 2: Follow the monthly target",
-          text: "Use your setup numbers as a base plan and only add optional expenses after essentials are covered."
+          text: "Use your setup numbers as a plan and only add optional expenses after necesary bills. "
         });
       }
 
       if (left < 0) {
         plan.push({
           title: "Step 3: Close the budget gap",
-          text: `You are short by ${money(Math.abs(left))}. Reduce the highest flexible category first: ${profile.overspendArea || "optional spending"}.`
+          text: `You are short by ${money(Math.abs(left))}. Reduce the highest flexible category first which is ${profile.overspendArea || "optional spending"}.`
         });
       } else {
         plan.push({
           title: "Step 3: Assign the remaining money",
-          text: `You currently have ${money(left)} left. Split it between savings, extra debt payment, and a small personal spending buffer.`
+          text: `You currently have ${money(left)} left. Split it between savings, extra debt payment, and a small amount can go toward non-essentails.`
         });
       }
 
